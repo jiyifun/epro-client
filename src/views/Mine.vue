@@ -14,7 +14,7 @@
   <div class="mine-warp">
     <div class="mine-header">
       <div class="mine-avatar">
-        <a class="mine-avatar-btn">
+        <a @click="gotoSetting" class="mine-avatar-btn">
           <!-- ../assets/order/avatar.png -->
           <img v-if="user.avatar === null" :src="url_root + avatar_default" alt="" class="mine-avatar-photo">
           <img v-else :src="url_root_pro + user.avatar" alt="" class="mine-avatar-photo">
@@ -100,7 +100,8 @@ export default {
         age: null,
         star_count: 0,
         user_name: null,
-        avatar: null
+        avatar: null,
+        is_registed: 0
       },
       url_root: URL_ROOT,
       url_root_pro: URL_ROOT_PRO,
@@ -133,6 +134,18 @@ export default {
           // error callback
         console.log(response.data)
       })
+    },
+    // 注册检查
+    is_registed_check () {
+      if (this.is_registed !== 1) {
+        this.$route.router.go('/register/phone')
+        return
+      }
+    },
+    // 前往个人设置
+    gotoSetting () {
+      this.is_registed_check()
+      // this.$route.router.go('/register/phone')
     }
   }
 }
@@ -234,7 +247,7 @@ export default {
 
     li.mine-order-types__item {
       display: inline-block;
-      padding: 20px 30px;
+      padding: 36px;
 
       a.order-types-link {
         display: block;
