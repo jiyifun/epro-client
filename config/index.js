@@ -21,7 +21,7 @@ module.exports = {
     port: 8080,
     proxyTable: {
       '/e-api': {
-        target:'http://test.e-pro.com.cn/', 
+        target:'http://smile.e-pro.com.cn', 
         changeOrigin: true,
         ws: true,
         pathRewrite:{

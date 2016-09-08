@@ -1,9 +1,9 @@
 <template>
     <div class=" tabbar">
-        <a v-link="'/health'" @click="clickTab('health')" class="tabbar-item" :class="{'active': isActive('health')}">
+        <a v-link="'/mp/health'" @click="clickTab('health')" class="tabbar-item" :class="{'active': isActive('health')}">
             <p class=" tabbar-label">口腔健康</p>
         </a>
-        <a v-link="'/mine'" @click="clickTab('mine')" class="tabbar-item" :class="{'active': isActive('mine')}">
+        <a v-link="'/mp/mine'" @click="clickTab('mine')" class="tabbar-item" :class="{'active': isActive('mine')}">
             <p class=" tabbar-label">我的信息</p>
         </a>
     </div>

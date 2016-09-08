@@ -4,27 +4,26 @@
       <!-- 牙周组织数据 -->
       <div class="examination periodontium">
         <div class="examination-item">
-          <div class="examination-item__label">颜色</div>
-          <div class="examination-item__value">红肿</div>
+          <div class="examination-item__label">牙周颜色</div>
+          <div class="examination-item__value">{{health_data.oral_color}}</div>
         </div>
-        <div class="examination-item">
-          <div class="examination-item__label">外形</div>
-          <div class="examination-item__value">整齐</div>
+        <div class="examination-item" :class="{'warning': is_warning(health_data.is_tooth_broken)}">
+          <div class="examination-item__label">残根残冠</div>
+          <div class="examination-item__value">{{is_has(health_data.is_tooth_broken)}}</div>
         </div>
-        <div class="examination-item">
-          <div class="examination-item__label">质地</div>
-          <div class="examination-item__value">正常</div>
+        <div class="examination-item" :class="{'warning': is_warning(health_data.is_wisdom_tooth_abnormal)}">
+          <div class="examination-item__label">智齿异常</div>
+          <div class="examination-item__value">{{is_has(health_data.is_wisdom_tooth_abnormal)}}</div>
         </div>
-        <div class="examination-item">
-          <div class="examination-item__label">溢浓</div>
-          <div class="examination-item__value">无</div>
+        <div class="examination-item" :class="{'warning': is_warning(health_data.is_oral_mucosa_abnormal)}">
+          <div class="examination-item__label">口腔黏膜</div>
+          <div class="examination-item__value">{{is_normal(health_data.is_oral_mucosa_abnormal)}}</div>
         </div>
-        <p class="examination-title">牙周组织检查</p>
       </div>
       <!-- 用户数据选择 -->
       <div class="user-picker">
         <a class="menu">
-          我的-<span class="user-name">儿子</span>
+          {{health_data.user_name}}<span v-if="health_data.user_alias"class="user-name">-{{health_data.user_alias}}</span>
           <i class="arrow-down"></i>
         </a>
       </div>
@@ -36,9 +35,9 @@
           <div class="white-marsk"></div>
         </div>
         <div class="health-circle">
-          <circle :percent='percent2' :stroke-width=4 :trail-width=4 :stroke-color='strokeColor2' trail-color="#e1e1e1">
+          <circle :percent='~~(health_data.health_percent)' :stroke-width=4 :trail-width=4 stroke-color="#3FC7FA" trail-color="#e1e1e1">
             <div class="health-data">
-              <strong class="health-percent">{{percent2}}</strong><span>分</span>
+              <strong class="health-percent">{{health_data.health_percent}}</strong><span>分</span>
               <p>口腔健康指数</p>
             </div>
           </circle>
@@ -50,27 +49,26 @@
           建议
         </h3>
         <p class="proposal-content">
-          洁牙、矫正、补牙、种植
+          {{health_data.proposal}}
         </p>
       </div>
       <!-- 牙齿检查数据 -->
       <div class="examination tooth">
-        <p class="examination-title">牙齿检查</p>
         <div class="examination-item">
-          <div class="examination-item__label">颜色</div>
-          <div class="examination-item__value">泛黄</div>
+          <div class="examination-item__label">牙齿颜色</div>
+          <div class="examination-item__value">{{health_data.tooth_color}}</div>
         </div>
         <div class="examination-item">
-          <div class="examination-item__label">外形</div>
-          <div class="examination-item__value">整齐</div>
+          <div class="examination-item__label">牙齿外形</div>
+          <div class="examination-item__value">{{health_data.tooth_outlook}}</div>
         </div>
-        <div class="examination-item">
-          <div class="examination-item__label">动度</div>
-          <div class="examination-item__value">正常</div>
+        <div class="examination-item" :class="{'warning': is_warning(health_data.is_lost)}">
+          <div class="examination-item__label">是否缺失</div>
+          <div class="examination-item__value">{{is_has(health_data.is_lost)}}</div>
         </div>
-        <div class="examination-item warning">
-          <div class="examination-item__label">龋齿</div>
-          <div class="examination-item__value">有</div>
+        <div class="examination-item" :class="{'warning': is_warning(health_data.has_caries)}">
+          <div class="examination-item__label">有无龋齿</div>
+          <div class="examination-item__value">{{is_has(health_data.has_caries)}}</div>
         </div>
       </div>
       <!-- 其他项目 -->
@@ -80,24 +78,16 @@
           <span class="last-check-time">暂无数据</span>
         </div>
         <div class="health-line">
-          <div :style="{width: percent2 + '%'}" class="health-line__percent"></div>
+          <div :style="{width: health_data.health_percent + '%'}" class="health-line__percent"></div>
         </div>
         <div class="other-content">
           <div class="other-item">
             <em class="other-item__label">牙齿数目</em>
-            <p class="other-item__value">32</p>
+            <p class="other-item__value">{{health_data.tooth_count}}</p>
           </div>
           <div class="other-item">
             <em class="other-item__label">牙齿排列</em>
-            <p class="other-item__value">整齐</p>
-          </div>
-          <div class="other-item">
-            <em class="other-item__label">口腔黏膜</em>
-            <p class="other-item__value">正常</p>
-          </div>
-          <div class="other-item">
-            <em class="other-item__label">咬合关系</em>
-            <p class="other-item__value">正常</p>
+            <p class="other-item__value">{{health_data.tooth_arrange}}</p>
           </div>
         </div>
       </div>
@@ -107,36 +97,84 @@
 </template>
 
 <script type="text/babel">
-  import {contentList} from '../vuex/getters'
-  import {getContentList, updateHeadline} from '../vuex/actions'
+/*global alert:true*/
+  import {updateHeadline} from '../vuex/actions'
   import Circle from 'vux/src/components/circle'
   import Tabbar from '../components/Vfooter'
+  import * as api from '../constants/api'
+  import {VAR_HAS, VAR_HAS_NOT, VAR_ABNORMAL, VAR_NORMAL} from '../constants'
   export default {
+    data () {
+      return {
+        health_data: {
+          has_caries: null,
+          health_percent: 0,
+          is_lost: null,
+          is_oral_mucosa_abnormal: null,
+          is_tooth_broken: null,
+          is_wisdom_tooth_abnormal: null,
+          oral_color: null,
+          proposal: null,
+          tooth_arrange: null,
+          tooth_color: null,
+          tooth_count: null,
+          tooth_outlook: null,
+          user_alias: null,
+          user_id: null,
+          user_name: null
+        }
+      }
+    },
+    computed: {
+    },
     components: {
       Circle,
       Tabbar
     },
     vuex: {
-      getters: {
-        items: contentList
-      },
       actions: {
-        getList: getContentList,
-        updateHeadline: updateHeadline
+        updateHeadline
       }
     },
-    data () {
-      return {
-        percent2: 90,
-        strokeColor2: '#3FC7FA'
+    methods: {
+      is_warning (val) {
+        return val === '1'
+      },
+      is_has (val) {
+        return val === '1' ? VAR_HAS : VAR_HAS_NOT
+      },
+      is_normal (val) {
+        return val === '1' ? VAR_ABNORMAL : VAR_NORMAL
+      // },
+      // oral_mucosa () {
+      //   return this.is_normal(this.health_data.is_oral_mucosa_abnormal)
+      // },
+      // wisdom_tooth () {
+      //   return this.health_data.is_wisdom_tooth_abnormal === '1' ?
+      },
+      getHealthData () {
+        var vm = this
+        this.$http.get(api.GET_HEALTH_DATA).then((response) => {
+          // alert(response.body)
+          var data = JSON.parse(response.body)
+          // alert('获取数据成功 2')
+          console.info(data)
+          if (data.errcode === 0 && data.result) {
+            vm.health_data = data.result
+            // alert('获取数据成功')
+          } else {
+            alert('暂无数据')
+          }
+        }, (response) => {
+            // error callback
+          console.log(response.data)
+        })
       }
-    },
-    created () {
-      this.getList()
-      this.updateHeadline('主页')
     },
     ready () {
-      // this.updateHeadline('主页')
+      // alert('ready')
+      this.updateHeadline('我的口腔数据')
+      this.getHealthData()
     }
   }
 </script>
@@ -153,6 +191,7 @@
   bottom: 100px;
   padding: 40px 70px 0 70px;
   background-color: #fff;
+  overflow: scroll;
 }
 /*数据胶囊*/
  .examination {
@@ -167,24 +206,29 @@
   .examination-item {
     position: absolute;
     width: 54px;
-    height: 200px;
+    height: 240px;
     background-size: cover;
-    background-image: url('../assets/default-bg.png');
+    background-color: $theme-blue;
     text-align: center;
     line-height: 1.2;
-    
+    border-radius: 27px;
+    font-size: 20px;
     &.warning {
-      background-image: url('../assets/warning-bg.png');
+      background: -webkit-linear-gradient(90deg, rgba(255,0,0,1) 0, rgba(244,171,79,1) 100%), -webkit-repeating-linear-gradient(0deg, rgba(145,186,63,1) 0, rgba(145,186,63,1) 2%, rgba(145,186,63,1) 8%, rgba(145,186,63,1) 16%, rgba(145,186,63,1) 21%, rgba(145,186,63,1) 27%, rgba(145,186,63,1) 29%, rgba(145,186,63,1) 33%, rgba(145,186,63,1) 39%, rgba(145,186,63,1) 53%, rgba(145,186,63,1) 60%, rgba(145,186,63,1) 79%, rgba(145,186,63,1) 85%, rgba(124,188,10,1) 100%);
+        background: -moz-linear-gradient(0deg, rgba(255,0,0,1) 0, rgba(244,171,79,1) 100%), -moz-repeating-linear-gradient(90deg, rgba(145,186,63,1) 0, rgba(145,186,63,1) 2%, rgba(145,186,63,1) 8%, rgba(145,186,63,1) 16%, rgba(145,186,63,1) 21%, rgba(145,186,63,1) 27%, rgba(145,186,63,1) 29%, rgba(145,186,63,1) 33%, rgba(145,186,63,1) 39%, rgba(145,186,63,1) 53%, rgba(145,186,63,1) 60%, rgba(145,186,63,1) 79%, rgba(145,186,63,1) 85%, rgba(124,188,10,1) 100%);
+        background: linear-gradient(0deg, rgba(255,0,0,1) 0, rgba(244,171,79,1) 100%), repeating-linear-gradient(90deg, rgba(145,186,63,1) 0, rgba(145,186,63,1) 2%, rgba(145,186,63,1) 8%, rgba(145,186,63,1) 16%, rgba(145,186,63,1) 21%, rgba(145,186,63,1) 27%, rgba(145,186,63,1) 29%, rgba(145,186,63,1) 33%, rgba(145,186,63,1) 39%, rgba(145,186,63,1) 53%, rgba(145,186,63,1) 60%, rgba(145,186,63,1) 79%, rgba(145,186,63,1) 85%, rgba(124,188,10,1) 100%);
+        background-position: 50% 50%;
+      // background-image: url('../assets/warning-bg.png');
     }
     .examination-item__label {
-      padding: 20px 10px 0 10px;
+      padding: 15px 10px 5px;
       color: #fff;
-      height: 78px;
+      height: 100px;
       border-bottom: 1px solid $gray-deep;
     }
     .examination-item__value {
-      color: $txt-bold;
-      padding: 20px 10px 0 10px;
+      color: #fff;
+      padding: 10px;
     }
   }
   // 牙周部分
@@ -212,19 +256,19 @@
   }
   // 牙齿部分
   &.tooth {
-    .examination-item:nth-child(2) {
+    .examination-item:nth-child(1) {
       top: 54px;
       left: 0px;
     }
-    .examination-item:nth-child(3) {
+    .examination-item:nth-child(2) {
       top: 22px;
       left: 85px;
     }
-    .examination-item:nth-child(4) {
+    .examination-item:nth-child(3) {
       top: -40px;
       left: 170px;
     }
-    .examination-item:nth-child(5) {
+    .examination-item:nth-child(4) {
       top: -110px;
       left: 255px;
     }
@@ -319,13 +363,16 @@
     margin-top: -30px;
 
     .health-percent {
-      font-size: 80px;/*px*/
+      font-size: 100px;
       font-weight: lighter;
       color: $txt-default;
     }
     span {
-      font-size: 36px;/*px*/
+      font-size: 36px;
       color: $txt-default;
+    }
+    p {
+      font-size: 24px;
     }
   }
   
@@ -345,7 +392,7 @@
     margin-top: -50px;
     padding: 5px 10px;
     background-color: $gray-default;
-    font-size: 24px;/*px*/
+    font-size: 24px;
     border-radius: 6px;
   }
   .proposal-content {
@@ -353,7 +400,7 @@
     height: 100%;
     padding: 5px;
     color: $txt-bold;
-    font-size: 30px;/*px*/
+    font-size: 30px;
 
   }
 }
@@ -369,6 +416,7 @@
 /*其他项目*/
 .other {
   margin-top: 230px;
+  margin-bottom: 30px;
   width: 100%;
   height: 230px;
 
@@ -403,7 +451,7 @@
     .other-item {
       @extend .ui-border-r;
       display: inline-block;
-      width: 23%;
+      width: 47%;
       height: 60px;
       border-right: 1px solid $gray-deep;/*px*/
       line-height: 1;

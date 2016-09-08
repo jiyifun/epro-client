@@ -15,7 +15,7 @@
 </script>
 
 <style>
-@import '/style/css/variable';
+/*@import '../style/css/variable';*/
   body {
     -webkit-font-smoothing:antialiased;
     margin: 0;
