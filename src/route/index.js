@@ -2,6 +2,9 @@
 // 业务模块
 import Health from '../views/Health'
 import Mine from '../views/Mine'
+import Clinics from '../views/Clinics'
+import Normal from '../views/article/Normal'
+import Warning from '../views/article/Warning'
 // import App from '../App'
 // 注册模块
 import RegisterByWx from '../views/register/WeiXin'
@@ -26,6 +29,17 @@ export function configRouter (router) {
     },
     '/mine': {
       component: Mine
+    },
+    '/clinics': {
+      component: Clinics
+    },
+    '/article/normal/:project': {
+      component: Normal,
+      name: 'normal'
+    },
+    '/article/warning/:project': {
+      component: Warning,
+      name: 'warning'
     }
   })
   // global before

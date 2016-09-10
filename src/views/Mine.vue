@@ -205,7 +205,7 @@ export default {
   .mine-order-title {
     position: relative;
     height: 80px;
-    padding: 0 70px;
+    padding: 0 30px;
     line-height: 80px;
     border-bottom: 1px solid #d3d3d3;/*px*/
 
@@ -247,7 +247,7 @@ export default {
 
     li.mine-order-types__item {
       display: inline-block;
-      padding: 36px;
+      padding: 30px 40px;
 
       a.order-types-link {
         display: block;
@@ -272,7 +272,7 @@ export default {
     padding: 0 30px;
 
     li.other-item {
-      padding: 0 40px;
+      // padding: 0 40px;
       border-bottom: 1px solid #d3d3d3;
       line-height: 100px;
 

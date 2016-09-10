@@ -19,7 +19,8 @@ module.exports = {
     alias: {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components')
+      'components': path.resolve(__dirname, '../src/components'),
+      'vux-components': 'vux/src/components/'
     }
   },
   resolveLoader: {
@@ -58,6 +59,10 @@ module.exports = {
       {
         test: /\.html$/,
         loader: 'vue-html'
+      },
+      {
+        test: /vux.src.*?js$/,
+        loader: 'babel'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

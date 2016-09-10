@@ -3,19 +3,19 @@
     <div class="health-wrap">
       <!-- 牙周组织数据 -->
       <div class="examination periodontium">
-        <div class="examination-item">
+        <div class="examination-item" @click="gotoArticle('oral_color' ,health_data.oral_color)" >
           <div class="examination-item__label">牙周颜色</div>
           <div class="examination-item__value">{{health_data.oral_color}}</div>
         </div>
-        <div class="examination-item" :class="{'warning': is_warning(health_data.is_tooth_broken)}">
+        <div class="examination-item" @click="gotoArticle('tooth_broken' ,health_data.is_tooth_broken)" :class="{'warning': is_warning(health_data.is_tooth_broken)}">
           <div class="examination-item__label">残根残冠</div>
           <div class="examination-item__value">{{is_has(health_data.is_tooth_broken)}}</div>
         </div>
-        <div class="examination-item" :class="{'warning': is_warning(health_data.is_wisdom_tooth_abnormal)}">
+        <div class="examination-item" @click="gotoArticle('wisdom_tooth' ,health_data.is_wisdom_tooth_abnormal)" :class="{'warning': is_warning(health_data.is_wisdom_tooth_abnormal)}">
           <div class="examination-item__label">智齿异常</div>
           <div class="examination-item__value">{{is_has(health_data.is_wisdom_tooth_abnormal)}}</div>
         </div>
-        <div class="examination-item" :class="{'warning': is_warning(health_data.is_oral_mucosa_abnormal)}">
+        <div class="examination-item" @click="gotoArticle('oral_mucosa' ,health_data.is_oral_mucosa_abnormal)" :class="{'warning': is_warning(health_data.is_oral_mucosa_abnormal)}">
           <div class="examination-item__label">口腔黏膜</div>
           <div class="examination-item__value">{{is_normal(health_data.is_oral_mucosa_abnormal)}}</div>
         </div>
@@ -54,19 +54,19 @@
       </div>
       <!-- 牙齿检查数据 -->
       <div class="examination tooth">
-        <div class="examination-item">
+        <div class="examination-item" @click="gotoArticle('tooth_color' ,health_data.tooth_color)">
           <div class="examination-item__label">牙齿颜色</div>
           <div class="examination-item__value">{{health_data.tooth_color}}</div>
         </div>
-        <div class="examination-item">
+        <div class="examination-item" @click="gotoArticle('tooth_outlook' ,health_data.tooth_outlook)">
           <div class="examination-item__label">牙齿外形</div>
           <div class="examination-item__value">{{health_data.tooth_outlook}}</div>
         </div>
-        <div class="examination-item" :class="{'warning': is_warning(health_data.is_lost)}">
+        <div class="examination-item" @click="gotoArticle('is_lost' ,health_data.is_lost)" :class="{'warning': is_warning(health_data.is_lost)}">
           <div class="examination-item__label">是否缺失</div>
           <div class="examination-item__value">{{is_has(health_data.is_lost)}}</div>
         </div>
-        <div class="examination-item" :class="{'warning': is_warning(health_data.has_caries)}">
+        <div class="examination-item" @click="gotoArticle('has_caries' ,health_data.has_caries)" :class="{'warning': is_warning(health_data.has_caries)}">
           <div class="examination-item__label">有无龋齿</div>
           <div class="examination-item__value">{{is_has(health_data.has_caries)}}</div>
         </div>
@@ -81,11 +81,11 @@
           <div :style="{width: health_data.health_percent + '%'}" class="health-line__percent"></div>
         </div>
         <div class="other-content">
-          <div class="other-item">
+          <div class="other-item" @click="gotoArticle('tooth_count' ,health_data.tooth_count)">
             <em class="other-item__label">牙齿数目</em>
             <p class="other-item__value">{{health_data.tooth_count}}</p>
           </div>
-          <div class="other-item">
+          <div class="other-item" @click="gotoArticle('tooth_arrange' ,health_data.tooth_arrange)">
             <em class="other-item__label">牙齿排列</em>
             <p class="other-item__value">{{health_data.tooth_arrange}}</p>
           </div>
@@ -137,6 +137,58 @@
       }
     },
     methods: {
+      gotoArticle (item, val) {
+        var normalUrl = 'normal'
+        var warningUrl = 'warning'
+        var result = null
+        var project = null
+        switch (item) {
+          case 'tooth_broken':
+            val === '1' ? result = warningUrl : result = normalUrl
+            project = 'loosenTooth'
+            break
+          case 'wisdom_tooth':
+            val === '1' ? result = warningUrl : result = normalUrl
+            project = 'wisdomTooth'
+            break
+          case 'oral_color':
+            val === '正常' ? result = normalUrl : result = warningUrl
+            project = 'cleanTooth'
+            break
+          case 'oral_mucosa':
+            val === '正常' ? result = normalUrl : result = warningUrl
+            project = 'oralMucosa'
+            break
+          case 'tooth_color':
+            val === '正常' ? result = normalUrl : result = warningUrl
+            project = 'whiteningTooth'
+            break
+          case 'tooth_outlook':
+            val === '正常' ? result = normalUrl : result = warningUrl
+            project = 'cleanTooth'
+            break
+          case 'is_lost':
+            val === '1' ? result = warningUrl : result = normalUrl
+            project = 'loosenTooth'
+            break
+          case 'has_caries':
+            val === '1' ? result = warningUrl : result = normalUrl
+            project = 'cariesTooth'
+            break
+          case 'tooth_count':
+            ~~val > 27 && ~~val < 33 ? result = normalUrl : result = warningUrl
+            project = 'toothCount'
+            break
+          case 'tooth_arrange':
+            val === '正常' ? result = normalUrl : result = warningUrl
+            project = 'arrangeTooth'
+            break
+          default:
+            result = normalUrl
+            project = 'cleanTooth'
+        }
+        this.$route.router.go({name: result, params: {project: project}})
+      },
       is_warning (val) {
         return val === '1'
       },

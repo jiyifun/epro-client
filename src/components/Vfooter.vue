@@ -3,6 +3,9 @@
         <a v-link="'/health'" @click="clickTab('health')" class="tabbar-item" :class="{'active': isActive('health')}">
             <p class=" tabbar-label">口腔健康</p>
         </a>
+        <a v-link="'/clinics'" @click="clickTab('clinics')" class="tabbar-item" :class="{'active': isActive('clinics')}">
+            <p class=" tabbar-label">找诊所</p>
+        </a>
         <a v-link="'/mine'" @click="clickTab('mine')" class="tabbar-item" :class="{'active': isActive('mine')}">
             <p class=" tabbar-label">我的信息</p>
         </a>

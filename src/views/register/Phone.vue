@@ -62,7 +62,7 @@ export default {
       }
       var vm = this
       var formdata = new FormData()
-      formdata.append('phone', phone)
+      formdata.append('mobile', phone)
       this.$http.post(API_GET_CAPTCHA, formdata).then((response) => {
         // success
         var data = JSON.parse(response.body)
@@ -74,7 +74,7 @@ export default {
         vm.startWaiting()
       }, (response) => {
         // failure
-        var data = JSON.parse(response.body)
+        var data = JSON.parse(response)
         console.error(data)
       })
     },
@@ -124,6 +124,8 @@ export default {
       width: 140px;
       height: 155px;
       background-image: url('../../assets/logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
     }
   }
   .register-form {
