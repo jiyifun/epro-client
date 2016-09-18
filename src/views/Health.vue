@@ -23,8 +23,8 @@
       <!-- 用户数据选择 -->
       <div class="user-picker">
         <a class="menu">
-          {{health_data.user_name}}<span v-if="health_data.user_alias"class="user-name">-{{health_data.user_alias}}</span>
-          <i class="arrow-down"></i>
+          {{health_data.user_name}}<!-- <span v-if="health_data.user_alias"class="user-name">-{{health_data.user_alias}}</span> -->
+          <!-- <i class="arrow-down"></i> -->
         </a>
       </div>
       <!-- 口腔健康指数环形进度条 -->

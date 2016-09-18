@@ -3,6 +3,7 @@
 import Health from '../views/Health'
 import Mine from '../views/Mine'
 import Clinics from '../views/Clinics'
+import ClinicDetail from '../views/clinic/Detail'
 import Normal from '../views/article/Normal'
 import Warning from '../views/article/Warning'
 // import App from '../App'
@@ -32,6 +33,9 @@ export function configRouter (router) {
     },
     '/clinics': {
       component: Clinics
+    },
+    '/clinics/:id': {
+      component: ClinicDetail
     },
     '/article/normal/:project': {
       component: Normal,

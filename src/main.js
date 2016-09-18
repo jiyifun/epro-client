@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import FastClick from 'fastclick'
 import VueValidator from 'vue-validator'
+// import 'vconsole'
 // 引入路由配置
 import { configRouter } from './route'
 // 引入样式
