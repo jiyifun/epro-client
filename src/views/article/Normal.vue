@@ -54,7 +54,7 @@ export default {
   		}
     }
     .article-content {
-    	font-size: 24px;/*px*/
+    	font-size: 30px;/*px*/
       line-height: 55px;
       color: $txt-bold;
 

@@ -6,23 +6,24 @@
 				        :performance-mode="false"
 				        :pagination-visible="true"
 				        :pagination-clickable="true">
-				    <div>Page 1</div>
-				    <div>Page 2</div>
-				    <div>Page 3</div>
+				    <div class="clinic-banner"></div>
+				    <div class="clinic-banner"></div>
+				    <div class="clinic-banner"></div>
+				    <div class="clinic-banner"></div>
 				</swiper>
 				<div class="clinic-swiper__footer--bg"></div>
 			<div class="clinic-swiper__footer">
 				<div class="clinic-swiper__footer--container">
 					<div class="clinic-info-item">
-						<p class="clinic-info-item__number">4321</p>
+						<p class="clinic-info-item__number">{{clinic.appointment}}</p>
 						<p class="clinic-info-item__title">预约</p>
 					</div>
 					<div class="clinic-info-item">
-						<p class="clinic-info-item__number">23</p>
+						<p class="clinic-info-item__number">{{clinic.cases}}</p>
 						<p class="clinic-info-item__title">案例</p>
 					</div>
 					<div class="clinic-info-item">
-						<p class="clinic-info-item__number">2</p>
+						<p class="clinic-info-item__number">{{clinic.rank}}</p>
 						<p class="clinic-info-item__title">排名</p>
 					</div>
 				</div>
@@ -33,15 +34,15 @@
 			<div class="clinic-container__info">
 				<i class="icon icon-clinic_address"></i>
 				<div class="clinic_address"><p>{{clinic.name}}<br/>{{clinic.address}}</p></div>
-				<div class="clinic_contact">
+				<a :href="'tel:' + clinic.number" class="clinic_contact">
 					<i class="icon icon-clinic_contact"></i>
-				</div>
+				</a>
 			</div>
 		</div>
 		<div class="clinic-server">
 			<h2 class="clinic-server__title">我的美购</h2>
 			<ul class="clinic-server__list">
-				<li v-for="item in clinic.projects" class="clinic-server__item">
+				<li @click="gotoProject(clinic.id)" v-for="item in clinic.projects" class="clinic-server__item">
 					<h3 class="clinic-server__item--title">{{item.name}}</h3>
 					<span class="clinic-server__item--amount">￥{{item.amount}}起</span>
 					<span class="clinic-server__item--price">￥{{item.price}}起</span>
@@ -53,52 +54,43 @@
 </template>
 <script>
 import Swiper from 'vue-swiper'
+import {updateHeadline} from '../../vuex/actions'
 export default {
   components: {
     Swiper
   },
+  vuex: {
+    actions: {
+      updateHeadline
+    }
+  },
   data () {
     return {
       clinic: {
-        name: '东莞固德会所',
+        name: '固德口腔会所',
         address: '东莞市莞城市政府富民路24号（盈丰科技大厦）固德口腔会所2、3楼',
-        number: '12212121',
-        appointment: '322',
+        number: '0769-39000111',
+        appointment: '12',
         cases: '21',
-        rank: '2',
+        rank: '1',
+        imgs: [1, 2, 3],
         projects: [{
-          name: '【洁牙】',
-          amount: '2100',
-          price: '5100',
+          id: 1,
+          name: '【牙周养护套餐】',
+          amount: '228',
+          price: '1260',
           appointment_count: '31'
-        }, {
-          name: '【美白】',
-          amount: '3100',
-          price: '4600',
-          appointment_count: '12'
-        }, {
-          name: '【洁牙】',
-          amount: '2100',
-          price: '5100',
-          appointment_count: '31'
-        }, {
-          name: '【美白】',
-          amount: '3100',
-          price: '4600',
-          appointment_count: '12'
-        }, {
-          name: '【洁牙】',
-          amount: '2100',
-          price: '5100',
-          appointment_count: '31'
-        }, {
-          name: '【美白】',
-          amount: '3100',
-          price: '4600',
-          appointment_count: '12'
         }]
       }
     }
+  },
+  methods: {
+    gotoProject (id) {
+      this.$route.router.go({name: 'project', params: {id: id}})
+    }
+  },
+  created () {
+    this.updateHeadline('固德口腔会所')
   }
 }
 </script>
@@ -112,13 +104,13 @@ export default {
 	background-color: $gray-default;
 }
 
-.icon {
-	display: block;
-	position: absolute;
-	background-position: center;
-	background-size: contain;
-	background-repeat: no-repeat;
-}
+// .icon {
+// 	display: block;
+// 	position: absolute;
+// 	background-position: center;
+// 	background-size: contain;
+// 	background-repeat: no-repeat;
+// }
 
 .clinic-header {
 	position: relative;
@@ -128,6 +120,25 @@ export default {
   #clinic-swiper {
   	height: 100%;
   	width: 100%;
+
+  	.clinic-banner {
+  		background-repeat: no-repeat;
+  		background-position: center;
+  		background-size: contain;
+  	}
+
+  	.clinic-banner:nth-child(1) {
+  		background-image: url('../../assets/image/banner1.jpg');
+  	}
+  	.clinic-banner:nth-child(2) {
+  		background-image: url('../../assets/image/banner2.jpg');
+  	}
+  	.clinic-banner:nth-child(3) {
+  		background-image: url('../../assets/image/banner3.jpg');
+  	}
+  	.clinic-banner:nth-child(4) {
+  		background-image: url('../../assets/image/banner4.jpg');
+  	}
   }
 	.clinic-swiper__footer {
 		position: absolute;

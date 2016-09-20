@@ -21,7 +21,7 @@
 		<div class="clinics-wrap">
 			
 			<ul class="clinics-list">
-				<li v-for="clinic in clinicsList" class="clinic-item">
+				<li v-for="clinic in clinicsList" class="clinic-item" @click="gotoDetail(clinic.id)">
 					<div alt="" class="clinic-img"></div>
 					<div class="clinic-info">
 						<h3 class="clinic-name">{{clinic.name}}</h3>
@@ -51,18 +51,20 @@ export default {
   data () {
     return {
       clinicsList: [{
-        name: '莞城体验店',
+        id: 1,
+        name: '固德口腔会所',
         img_url: '',
         distance: '5KM',
         projects: ['洁牙', '美白', '正畸'],
         is_auth: 1
-      }, {
-        name: '美齿口腔',
-        img_url: '',
-        distance: '>5KM',
-        projects: ['洁牙', '正畸'],
-        is_auth: 1
       }]
+    }
+  },
+  methods: {
+    gotoDetail (id) {
+      if (id) {
+        this.$route.router.go({name: 'clinicDetail', id: id})
+      }
     }
   },
   components: {
@@ -175,7 +177,7 @@ export default {
   			}
   			.clinic-auth {
   				margin-top: 30px;
-  				width: 80px;
+  				width: 88px;
   				height: 30px;
   				background-color: #1f1554;
   				line-height: 30px;
@@ -193,6 +195,7 @@ export default {
   				span {
   					color: #c1ba5d;
   					padding-left: 30px;
+            font-size: 24px;/*px*/
   				}
   			}
 

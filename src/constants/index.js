@@ -9,3 +9,5 @@ export const VAR_HAS = '有'
 export const VAR_HAS_NOT = '无'
 export const VAR_ABNORMAL = '异常'
 export const VAR_NORMAL = '正常'
+export const TOOTH_COLOR = ['正常', '偏黄', '牙渍', '较深']
+export const TOOTH_COUNT = ['正常', '缺失', '多生', '双排牙']

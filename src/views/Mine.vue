@@ -16,16 +16,15 @@
       <div class="mine-avatar">
         <a @click="gotoSetting" class="mine-avatar-btn">
           <!-- ../assets/order/avatar.png -->
-          <img v-if="user.avatar === null" :src="url_root + avatar_default" alt="" class="mine-avatar-photo">
-          <img v-else :src="url_root_pro + user.avatar" alt="" class="mine-avatar-photo">
+          <img v-if="user.avatar === null" :src="avatar_default" alt="" class="mine-avatar-photo">
+          <img v-else :src="user.avatar" alt="" class="mine-avatar-photo">
         </a>
       </div>
       <div class="mine-description">
         <span class="mine-name">{{user.user_name}}</span>
-        <span v-show="user.age" class="mine-age">{{user.age}}岁</span>
       </div>
     </div>
-    <div class="mine-order">
+    <!-- <div class="mine-order">
       <div class="mine-order-title">
         <div class="mine-order-title__left">
           <i class="mine-order-icon"></i>
@@ -63,10 +62,10 @@
           </a>
         </li>
       </ul>
-    </div>  
+    </div>   -->
     <div class="mine-other">
       <ul class="mine-other-items">
-        <li class="other-item">
+        <!-- <li class="other-item">
           <a  class="other-item-link">
             <em class="other-item-title">我的健康指数</em>
             <ul v-show="user.star_count" class="star-list">
@@ -77,9 +76,9 @@
               <li :class="[user.star_count >= 5 ? 'star' : 'unstar']" class="star-item"><i class="star-icon"></i></li>
             </ul>
           </a>
-        </li>
-        <li class="other-item"><a  class="other-item-link"><span class="other-item-title">我的看牙日记</span></a></li>
-        <li class="other-item"><a  class="other-item-link"><span class="other-item-title">开始就诊</span></a></li>
+        </li> -->
+        <li @click="gotoDaily()" class="other-item"><a  class="other-item-link"><span class="other-item-title">我的看牙日记</span></a></li>
+        <!-- <li class="other-item"><a  class="other-item-link"><span class="other-item-title">开始就诊</span></a></li> -->
       </ul>
     </div>
   </div>
@@ -89,7 +88,7 @@
 <script>
 /*global alert:true*/
 /*eslint no-undef: "error"*/
-import {URL_ROOT, URL_ROOT_PRO, AVATAR_DEFAULT} from '../constants'
+import {URL_ROOT_PRO, AVATAR_DEFAULT} from '../constants'
 import {updateHeadline} from '../vuex/actions'
 import * as api from '../constants/api'
 import Tabbar from '../components/Vfooter'
@@ -103,7 +102,6 @@ export default {
         avatar: null,
         is_registed: 0
       },
-      url_root: URL_ROOT,
       url_root_pro: URL_ROOT_PRO,
       avatar_default: AVATAR_DEFAULT
     }
@@ -146,6 +144,9 @@ export default {
     gotoSetting () {
       this.is_registed_check()
       // this.$route.router.go('/register/phone')
+    },
+    gotoDaily () {
+      this.$route.router.go('/daily/list')
     }
   }
 }
